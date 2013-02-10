@@ -1,0 +1,71 @@
+﻿textarea {
+   resize: none;
+   }
+
+
+.topic {
+   border: 3px solid #5E96CF;
+   }
+
+
+.child {
+
+
+}    
+   
+.replies {
+}    
+   
+.reply {
+        margin-left: 0;
+        padding-left: 50px;
+   }
+   
+.replyview {
+   display: none;
+   }
+   
+.replylink {
+   color: red;
+   text-decoration: underline;
+   }
+   
+.submitlink {
+   color: blue;
+   text-decoration: underline;
+   }
+
+.submittopic {
+   color: blue;
+   text-decoration: underline;
+   }
+   
+.ita {
+   display: none;
+   resize: none;
+   }
+
+
+.topictitle {
+   display: inline-block;
+}    
+
+
+.topicview {
+   display: none;
+   }
+
+
+.vote {
+   display: inline-block;
+}
+   
+.arrow {
+
+
+}
+
+
+.newtopic {
+           border: 3px solid #5E96CF;
+    }
