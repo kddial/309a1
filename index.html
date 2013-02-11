@@ -37,7 +37,7 @@
 		<a name="top"></a>
 	</p>
 	<!--000000000000000000000000000000000000000000000000000000000000000000-->
-	<div class="topic">
+<!-- 	<div class="topic">
 		<div class="topic_header" style="display:inline-block;">
 			<div class="vote">^</div>
 			<div class="topic_votes">0</div>
@@ -68,9 +68,9 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!--111111111111111111111111111111111111111111111111111111111111111111-->
-	<div class="topic">
+<!-- 	<div class="topic">
 
 
 		<div class="topic_header" style="display:inline-block;">
@@ -78,7 +78,6 @@
 			<div class="topic_votes">0</div>
 			<div class="topictitle">Topic 1</div>
 		</div>
-		<!-- clean reply -->
 		<a class="replylink">Reply</a>
 		<p class="replyview">
 			<textarea rows="5" cols="80"> </textarea><br>
@@ -87,7 +86,7 @@
 
 		<div class="replies">
 		</div>
-	</div>                        
+	</div>         -->                
 	<!--INSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERT-->
 
 
@@ -111,48 +110,54 @@
 <script language="javascript" type="text/javascript">
 
 $(document).ready(function(){
-	var reply_html_begin =	'<div class="reply" style="background-color:#E0FFF0;">' + 
-								'<p class="parent"></p>' +
-									'<div class="vote">^</div>' +
-									'<div class="reply_votes">0</div>';
+	var reply_html_begin =	
+					'<div class="reply">' + 
+						'<p class="parent"></p>' +
+							'<div class="vote">^</div>' +
+							'<div class="reply_votes">0</div>';
 
-	var reply_html_end =			'<a class="replylink">Reply</a>' +
-									'<p class="replyview" style="display:none;">' +
-										'<textarea rows="5" cols="80"></textarea><br>' +
-										'<a class="submitlink">Submit</a>' +
-									'</p>' +
-								'<div class="replies">' +
-								'</div>' + 
-							'</div>';
+	var reply_html_end =			
+							'&nbsp;&nbsp;<a class="replylink">Reply</a>' +
+							'<p class="replyview" style="display:none;">' +
+								'<textarea rows="5" cols="80"></textarea><br>' +
+								'<a class="submitlink">Submit</a>' +
+							'</p>' +
+						'<div class="replies">' +
+						'</div>' + 
+					'</div>';
 
-	var topic_html_begin =  '<div class="topic">' +
-								'<div class="topic_header" style="display:inline-block;">' +
-									'<div class="vote">^</div>' +
-									'<div class="topic_votes">0</div>' +
-									'<div class="topictitle">'
+	var topic_html_begin =  
+					'<div class="topic">' +
+						'<div class="topic_header">' +
+							'<div class="vote">^</div>' +
+							'<div class="topic_votes">0</div>' +
+							'<div class="topictitle"> &nbsp;'
 
-	var topic_html_end =			'</div>' +
-								'</div>' +
-								'<a class="replylink">Reply</a>' +
-								'<p class="replyview">' +
-									'<textarea cols="80" rows="5"> </textarea>' +
-									'<br>' +
-									'<a class="submitlink">Submit</a>' +
-								'</p>' +
-								'<div class="replies"> </div>' +
-							'</div>';
+	var topic_html_end =			
+							'</div>' +
+						'</div>' +
+						'&nbsp;&nbsp; <a class="view_comments"> View comments</a> &nbsp;&nbsp;' +
+						'<a class="replylink">Reply</a>' +
+						'<p class="replyview">' +
+							'<textarea cols="80" rows="5"></textarea>' +
+							'<br>' +
+							'<a class="submitlink">Submit</a>' +
+						'</p>' +
+						'<div class="replies"> </div>' +
+					'</div>';
 
-	// Clicking on the submit link
+	// Clicking on the submit reply link
 	$(document).on("click", ".submitlink", function() {
 		var output = $(this).parent().find("textarea").val(); // The text inside the textarea
 		$(this).parent().find("textarea").val("");  // Clear the text inside the textarea
 		$(this).parent().parent().children(".replies").append(reply_html_begin + output + reply_html_end);
 		$(this).parent().toggle();  // Toggle the replyview to disapeer after hitting submit
 									// should do error checking to make sure text isnt empty
+		$(this).parent().parent().parent().siblings(".replies").toggle();	// Display comments
 	});
 
-	// Clicking on Topic header
-	$(document).on("click", ".topic_header", function () {
+	// Clicking on view_comments
+	$(document).on("click", ".view_comments", function () {
 		$(this).siblings(".replies").toggle();
 	});
 
@@ -167,7 +172,7 @@ $(document).ready(function(){
 		$(this).siblings(".topicview").toggle();
 	});
 
-	// New topic submit link
+	// New topic submit topic link
 	$(document).on("click", ".submittopic", function() {
 			var output = $(this).parent().find("textarea").val(); // The text inside the textarea
 			$(this).parent().find("textarea").val("");  // Clear the text inside the textarea

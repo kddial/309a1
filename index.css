@@ -26,9 +26,14 @@
    }
    
 .replylink {
-   color: red;
+   color: #647585;
    text-decoration: underline;
    }
+
+.view_comments {
+   color: #647585;
+   text-decoration: underline;
+}
    
 .submitlink {
    color: blue;
@@ -47,7 +52,7 @@
 
 
 .topictitle {
-   display: inline-block;
+   font-weight: bold;
 }    
 
 
@@ -55,9 +60,17 @@
    display: none;
    }
 
+.topic_header {
+   background-color: #E0FFF0;
+   overflow: hidden;
+   }
 
 .vote {
-   display: inline-block;
+   float:left;
+}
+
+.topic_votes {
+   float:left;
 }
    
 .arrow {
@@ -67,5 +80,5 @@
 
 
 .newtopic {
-           border: 3px solid #5E96CF;
-    }
+  border: 3px solid #5E96CF;
+}
