@@ -55,6 +55,9 @@
 			//alert("Data Loaded from GET: " + data);
 			store += data;
 			$('body').append("<p>" + data.topics + data.topics.length + "</p>");
+			//need loop to go over the topics, can use data.topics.length
+				$('body').append("<p>" + data.topics[0].topic + data.topics[0].vote + data.topics[0].replies + "</p>");
+			//}
 		});
 		return store;
 	}
