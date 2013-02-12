@@ -30,72 +30,36 @@
 	}
 	
 	function sendstuff(ti) {
+		/*
 		  $.post("127.0.0.1:31135/", {"topic": ti, "vote": 0, "replies": "[]"}, function(data) {
-					//alert("Data Loaded from GET: " + data);
+					alert("Data Loaded from GET: " + data);
 				}, "json");
+		*/
+		$.ajax({
+			type: "POST",
+			url: "127.0.0.1:31135",
+			data: {"topic": ti, "vote": 0, "replies": "[]"},
+			dataType: "json"
+			});
+		return true;
 		 }
+		 
+	function getstuff() {
+		var store;
+		$.get("127.0.0.1:31135/",
+		function(data) {
+			//$('body').append( "Name: " + data.topic ) // John
+			//.append( "Time: " + data.vote ); // 2pm
+			store = data;
+			console.log(data);
+		}, 'utf-8');
+		return store;
+	}
 	</script>
 </head>
 
 </body>
 <div id="topic_area" class="topicarea">
-	<!--000000000000000000000000000000000000000000000000000000000000000000-->
-<!-- 	<div class="topic">
-		<div class="topic_header" style="display:inline-block;">
-			<div class="vote">^</div>
-			<div class="topic_votes">0</div>
-			<div class="topictitle">Topic 0</div>
-		</div>
-		<a class="replylink">Reply</a>
-		<p class="replyview">
-			<textarea rows="5" cols="80"> </textarea><br>
-			<a class="submitlink">Submit</a>
-		</p>
-		<div class="replies">                                        
-			<div class="reply">
-				<div class="vote">^</div><div class="reply_votes">0</div> reply text 0 <a class="replylink">Reply</a>
-				<p class="replyview">
-					<textarea rows="5" cols="80"> </textarea><br>
-					<a class="submitlink">Submit</a>
-				</p>
-				<div class="replies">
-					<div class="reply">
-						<div class="vote">^</div><div class="reply_votes">0</div> reply text 0a <a class="replylink">Reply</a>
-						<p class="replyview">
-							<textarea rows="5" cols="80"> </textarea><br>
-							<a class="submitlink">Submit</a>
-						</p>
-						<div class="replies">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<!--111111111111111111111111111111111111111111111111111111111111111111-->
-<!-- 	<div class="topic">
-
-
-		<div class="topic_header" style="display:inline-block;">
-			<div class="vote">^</div>
-			<div class="topic_votes">0</div>
-			<div class="topictitle">Topic 1</div>
-		</div>
-		<a class="replylink">Reply</a>
-		<p class="replyview">
-			<textarea rows="5" cols="80"> </textarea><br>
-			<a class="submitlink">Submit</a>
-		</p>
-
-		<div class="replies">
-		</div>
-	</div>         -->                
-	<!--INSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERTINSERT-->
-
-
-
-	<!--<a href="#top"> Top </a>-->
-
 
 </div>
 
@@ -183,6 +147,7 @@ $(document).ready(function(){
 			$(".topicarea").append(topic_html_begin + output + ' ' + topic_html_end);
 			$(this).parent().toggle();
 			sendstuff(output);
+			$('body').append("<div>" + getstuff() + "</div>");
 	});
 
 	// Sort on every vote clicked
@@ -197,15 +162,16 @@ $(document).ready(function(){
 
 		// Sort the topics as there is a change in the number of votes.
 		var topiclist = $(".topic").get();
-		topiclist.sort(topicsort)
+		topiclist.sort(topicsort);
 		$.each(topiclist, function(x, y) {$(".topicarea").append(y)});
 
 		// Sort the reply and its siblings.
 		var replylist = $(this).closest(".replies").children(".reply").get();
-		replylist.sort(replysort)
+		replylist.sort(replysort);
 		$.each(replylist, function(x, y) {$(this).closest(".replies").append(y)});
 	});
 	
+
 });
 
 </script>
