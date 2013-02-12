@@ -37,7 +37,7 @@
 		*/
 		$.ajax({
 			type: "POST",
-			url: "127.0.0.1:31135",
+			url: "",
 			data: {"topic": ti, "vote": 0, "replies": "[]"},
 			dataType: "json"
 			});
@@ -45,14 +45,17 @@
 		 }
 		 
 	function getstuff() {
-		var store;
-		$.get("127.0.0.1:31135/",
+		//document.URL = document.URL + "get";
+		var store = "";
+		$.get("/get",
 		function(data) {
 			//$('body').append( "Name: " + data.topic ) // John
 			//.append( "Time: " + data.vote ); // 2pm
-			store = data;
-			console.log(data);
-		}, 'utf-8');
+			//store = data;
+			//alert("Data Loaded from GET: " + data);
+			store += data;
+			$('body').append("<p>" + data.topics + data.topics.length + "</p>");
+		});
 		return store;
 	}
 	</script>
