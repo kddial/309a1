@@ -28,9 +28,10 @@
 				"reply": "Reply 2b", 
 				"vote": 5, 
 				"replies": [
-					{"reply": "Reply 2ba", 
-					"vote": 10, 
-					"replies": []
+					{
+						"reply": "Reply 2ba", 
+						"vote": 10, 
+						"replies": []
 					}
 				]
 			}
