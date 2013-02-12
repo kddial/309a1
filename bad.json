@@ -1,9 +1,9 @@
 { "topics": [
-  {
+  	{
 		"topic": "Topic 0",
 		"vote": 0,
 		"replies": []
-	}
+	},
 	{
 		"topic": "Topic 1",
 		"vote": 1,
@@ -14,16 +14,16 @@
 				"replies": []
 			} 
 		]
-	}
+	},
 	{
-		"topic": "Topic 2"
-		"vote: 99
+		"topic": "Topic 2",
+		"vote": 99,
 		"replies" : [
 			{
 				"reply": "Reply 2a", 
-				vote": 2, 
+				"vote": 2, 
 				"replies": []
-			}
+			},
 			{
 				"reply": "Reply 2b", 
 				"vote": 5, 
@@ -31,9 +31,10 @@
 					{"reply": "Reply 2ba", 
 					"vote": 10, 
 					"replies": []
+					}
+				]
 			}
 			]
-		]
 	}
 	]
 }
