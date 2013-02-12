@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 
-var stuff = [];
+var stuff = [ {topic: '-1', vote: '-1', replies: "[]"} ];
 
 http.createServer(function (request, response) {
 
@@ -17,9 +17,7 @@ http.createServer(function (request, response) {
 			console.log(stuff);
 		});
 		response.end();
-	//} else if(request.method=='GET') {
-	//	console.log("GET");
-	} else {
+	}  else if ((request.url == "/") || (request.url == "/index.css")) {
    var filePath = '.' + request.url;
    if (filePath == './')
        filePath = './test2.html';
@@ -54,7 +52,13 @@ http.createServer(function (request, response) {
            response.end();
        }
    });
-   }
+   }	else //if ((request.method=='GET') & (!(request.url == "/") || (request.url == "/index.css"))) {
+		{console.log("GET");
+		response.writeHead(200, {'Content-Type': 'text/plain' });
+		var ret = "hello"
+		console.log(ret);
+		response.end("hello", 'utf-8');
+	}
 
 }).listen(31135);
 
