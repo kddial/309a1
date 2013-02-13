@@ -81,14 +81,13 @@
 										'<br>' +
 										'<a class="submitlink">Submit</a>' +
 									'</p>' +
-									'<div class="replies"> ADD REPLIES HERE LATER </div>' +
-								'</div>';
-
-				//readReplies(data.topics[i].replies); // test read replies -kevin
-
+									'<div class="replies">'; 
+				output += readReplies(data.topics[i].replies);
+				output += '</div></div>';
 				$('.topicarea').append(output);
 			}
 		});
+		// TODO: add sorting algo here on ever load
 		return true;
 	}
 
@@ -146,28 +145,40 @@
 	// Read replies, repliseData can be a JSON object or string of empty array
 	function readReplies(repliesData) {
 		// check if data is object
+		var output = '';
 		if( typeof repliesData == "object" ) {
 
 			// Make sure list is not emtpy
 			if (repliesData.length == 0) {
-				$('body').append('<p>Q[]Q</p>');
+				//$('body').append('<p>Q[]Q</p>');
 			} else {
 
 				// Loop through all the replies
 				for (var j=0;j<repliesData.length;j++)
 				{
-					// print object's reply message
-					$('body').append('<p> Reply msg : ' + repliesData[j].reply + '&nbsp;&nbsp;&nbsp;Vote : ' +  repliesData[j].vote + '</p>');
-					//recurse on this objects replies
-					readReplies(repliesData[j].replies);
+					// Add the HTML tags for reply
+					output = '<div class="reply">' + 
+								'<p class="parent"></p>' +
+									'<div class="vote">^</div>' +
+									'<div class="reply_votes">' + repliesData[j].vote + '</div>' + 
+									'<div class="reply_text">' + repliesData[j].reply + '</div>' + 
+									'<a class="replylink">Reply</a>' +
+									'<p class="replyview" style="display:none;">' +
+										'<textarea rows="5" cols="80"></textarea><br>' +
+										'<a class="submitlink">Submit</a>' +
+									'</p>' +
+								'<div class="replies">';
+					output += readReplies(repliesData[j].replies);
+					output += '</div></div>';
 				}
 			}
 
 		} else {
-			// empty array, just return
+			// empty array from a new topic
 			repliesData = fixedEncodeURI(repliesData);
-			$('body').append('<p>' + repliesData + '</p>');
+			//$('body').append('<p>' + repliesData + '</p>');
 		}
+		return output;
 	}
 
 
