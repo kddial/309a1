@@ -31,7 +31,7 @@
 		return (firstelement < secondelement) ? 1 : (firstelement > secondelement) ? -1 : 0;
 	}
 	
-	function sendstuff(ti) {
+	function sendstuff(ti, lk) {
 		/*
 		  $.post("127.0.0.1:31135/", {"topic": ti, "vote": 0, "replies": "[]"}, function(data) {
 					alert("Data Loaded from GET: " + data);
@@ -40,7 +40,7 @@
 		$.ajax({
 			type: "POST",
 			url: "",
-			data: {"topic": ti, "vote": 0, "replies": "[]"},
+			data: {"topic": ti, "vote": 0, "link": lk, "replies": "[]"},
 			dataType: "json"
 			});
 		return true;
@@ -80,7 +80,7 @@
 									'</div>' +
 									'&nbsp;&nbsp; <a class="view_comments"> View comments</a> &nbsp;&nbsp;' +
 									'<a class="replylink">Reply</a>&nbsp;&nbsp;' +
-									'<a class="link">Link</a>' +
+									'<a class="link" href="' + data.topics[i].link + '">Link</a>' +
 									'<p class="replyview">' +
 										'<textarea cols="80" rows="5"></textarea>' +
 										'<br>' +
@@ -144,11 +144,14 @@ $(document).ready(function(){
 							'<div class="topic_votes">0</div>' +
 							'<div class="topictitle"> &nbsp;'
 
-	var topic_html_end =			
+	var topic_html_middle =			
 							'</div>' +
 						'</div>' +
 						'&nbsp;&nbsp; <a class="view_comments"> View comments</a> &nbsp;&nbsp;' +
-						'<a class="replylink">Reply</a>' +
+						'<a class="replylink">Reply</a>&nbsp;&nbsp;' +
+						'<a class="link" href="'
+
+	var topic_html_end = '">Link</a>' +
 						'<p class="replyview">' +
 							'<textarea cols="80" rows="5"></textarea>' +
 							'<br>' +
@@ -186,13 +189,15 @@ $(document).ready(function(){
 	$(document).on("click", ".submittopic", function() {
 		//var output = $(this).parent().find("textarea").val(); // The text inside the textarea
 		var output = $(this).siblings(".topictext").val();
+		var tlink = $(this).siblings(".topiclink").val();
 		//$(this).parent().find("textarea").val("");  // Clear the text inside the textarea
 		$(this).siblings(".topictext").val("");
+		$(this).siblings(".topiclink").val("");
 		$(this).siblings(".topicview").toggle();
-		$(".topicarea").append(topic_html_begin + output + ' ' + topic_html_end);
+		$(".topicarea").append(topic_html_begin + output + topic_html_middle + tlink + topic_html_end);
 		$(this).parent().toggle();
-		sendstuff(output);
-		$('body').append("<div>" + getstuff() + "</div>");
+		sendstuff(output, tlink);
+		//$('body').append("<div>" + getstuff() + "</div>");
 	});
 
 	// Sort on every vote clicked
