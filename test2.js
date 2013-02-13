@@ -7,7 +7,22 @@ var stuff = [];
 
 http.createServer(function (request, response) {
 
-	if (request.url == "/add") {
+	if (request.url == "/sendjson") {
+		console.log("SENDJSON");
+		//var body='';
+		request.setEncoding()
+		request.on('data', function (data) {
+			//body +=data;
+			//var random = body.split("&");
+			//var ins = { topic: random[0].slice(6), vote: random[1].slice(5), link: random[2].slice(5), replies: random[3].slice(8)};
+			//stuff.push(ins);
+			var random = eval("(" + data + ')');
+			console.log(random.topics);
+			stuff = random.topics;
+		});
+		response.end();
+	} else if (request.url == "/add") {
+		console.log("ADD");
 		stuff = [
 			  	{
 					"topic": "Topic 0",
