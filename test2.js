@@ -6,7 +6,7 @@ var stuff = [ {topic: '-1', vote: '-1', link: 'http://www.google.ca', replies: "
 
 http.createServer(function (request, response) {
 
-	if(request.method=='POST') {
+	if(request.url == "/post") {
 		console.log('POST');
 		var body='';
 			request.on('data', function (data) {
@@ -17,50 +17,47 @@ http.createServer(function (request, response) {
 			console.log(stuff);
 		});
 		response.end();
+	} else if (request.url == "/get") {
+		console.log("GET");
+		response.writeHead(200, {'Content-Type': 'application/json'});
+		response.end(JSON.stringify( {topics: stuff} ));
 	} else {
-		if (request.url == "/get") {
-			console.log("GET");
-			response.writeHead(200, {'Content-Type': 'application/json'});
-			response.end(JSON.stringify( {topics: stuff} ));
-		} else {
-		   var filePath = '.' + request.url;
-		   if (filePath == './')
-			   filePath = './test2.html';
-			
-		   var extname = path.extname(filePath);
-		   var contentType = 'text/html';
-		   switch (extname) {
-			   case '.js':
-				   contentType = 'text/javascript';
-				   break;
-			   case '.css':
-				   contentType = 'text/css';
-				   break;
+	   var filePath = '.' + request.url;
+	   if (filePath == './')
+		   filePath = './test2.html';
+		
+	   var extname = path.extname(filePath);
+	   var contentType = 'text/html';
+	   switch (extname) {
+		   case '.js':
+			   contentType = 'text/javascript';
+			   break;
+		   case '.css':
+			   contentType = 'text/css';
+			   break;
+	   }
+
+	   path.exists(filePath, function(exists) {
+
+		   if (exists) {
+			   fs.readFile(filePath, function(error, content) {
+				   if (error) {
+					   response.writeHead(500);
+					   response.end();
+				   }
+				   else {
+					   response.writeHead(200, {'Content-Type': contentType });
+					   response.write(content, 'utf-8');
+					   response.end();
+				   }
+			   });
 		   }
-
-		   path.exists(filePath, function(exists) {
-
-			   if (exists) {
-				   fs.readFile(filePath, function(error, content) {
-					   if (error) {
-						   response.writeHead(500);
-						   response.end();
-					   }
-					   else {
-						   response.writeHead(200, {'Content-Type': contentType });
-						   response.write(content, 'utf-8');
-						   response.end();
-					   }
-				   });
-			   }
-			   else {
-				   response.writeHead(404);
-				   response.end();
-			   }
-			});
-		};
-	
-	}
+		   else {
+			   response.writeHead(404);
+			   response.end();
+		   }
+		});
+	};
 }).listen(31135);
 
 console.log('Server running at http://127.0.0.1:31135/');

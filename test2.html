@@ -32,14 +32,9 @@
 	}
 	
 	function sendstuff(ti, lk) {
-		/*
-		  $.post("127.0.0.1:31135/", {"topic": ti, "vote": 0, "replies": "[]"}, function(data) {
-					alert("Data Loaded from GET: " + data);
-				}, "json");
-		*/
 		$.ajax({
 			type: "POST",
-			url: "",
+			url: "/post",
 			data: {"topic": ti, "vote": 0, "link": lk, "replies": "[]"},
 			dataType: "json"
 			});
@@ -52,7 +47,7 @@
 			// Loop through all the topics
 			for (var i=0;i<data.topics.length;i++)
 			{
-				$('.topicarea2').append("<p>" + "topic name:" + data.topics[i].topic + " topic vote: " + data.topics[i].vote 
+				$('.topicarea').append("<p>" + "topic name:" + data.topics[i].topic + " topic vote: " + data.topics[i].vote 
 											+ " topic replies: " + data.topics[i].replies + "</p>");
 
 			}
@@ -66,9 +61,9 @@
 
 			var output;
 			// Clear all the contents inside topic 
-			$('.topicarea2').html("");
+			$('.topicarea').html("");
 
-			// Loop through all the topics
+			// Loop through all the topics and append the HTML tags to output
 			for (var i=0;i<data.topics.length;i++)
 			{
 				output = 		'<div class="topic">' +
@@ -89,7 +84,7 @@
 									'<div class="replies"> ADD REPLIES HERE LATER </div>' +
 								'</div>';
 
-				$('.topicarea2').append(output);
+				$('.topicarea').append(output);
 			}
 		});
 		return true;
@@ -101,12 +96,6 @@
 </body>
 <div class="topicarea">
 	<p> <h3> topic_area</h3></p>
-</div>
-
-<button class="get_server" type="button">get stuff from server and add to tpoic_area_2</button>
-<div class="topicarea2">
-	<div> <h3> topic_area_2 - </h3> 
-	</div>
 </div>
 
 <div class="newtopic">
@@ -121,6 +110,10 @@
 <script language="javascript" type="text/javascript">
 
 $(document).ready(function(){
+
+	// Load the HTML from server
+	loadHTML();
+
 	var reply_html_begin =	
 					'<div class="reply">' + 
 						'<p class="parent"></p>' +
@@ -186,18 +179,17 @@ $(document).ready(function(){
 		$(this).siblings(".topicview").toggle();
 	});
 
+	// Submitting a new topic by clicking on submit link
 	$(document).on("click", ".submittopic", function() {
-		//var output = $(this).parent().find("textarea").val(); // The text inside the textarea
 		var output = $(this).siblings(".topictext").val();
 		var tlink = $(this).siblings(".topiclink").val();
-		//$(this).parent().find("textarea").val("");  // Clear the text inside the textarea
 		$(this).siblings(".topictext").val("");
 		$(this).siblings(".topiclink").val("");
 		$(this).siblings(".topicview").toggle();
-		$(".topicarea").append(topic_html_begin + output + topic_html_middle + tlink + topic_html_end);
+		//$(".topicarea").append(topic_html_begin + output + topic_html_middle + tlink + topic_html_end);
 		$(this).parent().toggle();
 		sendstuff(output, tlink);
-		//$('body').append("<div>" + getstuff() + "</div>");
+		loadHTML();
 	});
 
 	// Sort on every vote clicked
@@ -220,12 +212,6 @@ $(document).ready(function(){
 		replylist.sort(replysort);
 		$.each(replylist, function(x, y) {$(this).closest(".replies").append(y)});
 	});
-
-	// get stuff from server 
-	$(document).on("click", ".get_server", function() {
-		loadHTML();
-	});
-	
 
 });
 
