@@ -1,0 +1,73 @@
+  function makejsonstring() {
+		var jstring = '{ "topics" : [';
+		var firsttopic = $(".topicarea").children(".topic").first();
+		//first topic info
+		jstring += '{ "topic" : "' + firsttopic.children(".topic_header").children(".topictitle").text() + '", '
+				+ '"vote" : "' + firsttopic.children(".topic_header").children(".topic_votes").text()
+					+ '", "replies" : [';
+					
+		// do children
+		if (firsttopic.children(".replies").children(".reply").length > 0) {
+			jstring = firstreply(jstring, firsttopic.children(".replies").children(".reply").first());
+		}
+		jstring += ']}';
+				
+		// do other topics
+		if (firsttopic.next(".topic").length > 0) {
+			jstring = jsontopichelper(jstring, firsttopic.nextAll("div:first"));
+		}
+		jstring += ']}';
+		return jstring;
+    }
+    
+    function jsontopichelper(jstring, curtopic){
+		jstring += ', { "topic" : "' + curtopic.children(".topic_header").children(".topictitle").text() + '", '
+				+ '"vote" : ' + curtopic.children(".topic_header").children(".topic_votes").text() + ', "replies": [';
+				
+		// do children
+		if (curtopic.children(".replies").children(".reply").length > 0) {
+			jstring = firstreply(jstring, curtopic.children(".replies").children(".reply").first());
+		}
+		jstring += ']}';
+		
+		//do next topic
+		if (curtopic.next(".topic").length > 0) {
+			jstring = jsontopichelper(jstring, curtopic.nextAll("div:first"));
+		}
+		return jstring; 
+	}
+	function firstreply(jstring, curreply){
+		// first reply info
+		jstring += '{ "reply" : "' + curreply.children(".reply_text").text() + '" , "vote" : "' + curreply.children(".reply_votes").text() +
+				'", "replies" : [';
+		
+		//children
+		if (curreply.children(".replies").children(".reply").length > 0) {
+			jstring = firstreply(jstring, curreply.children(".replies").children(".reply").first());
+		}
+		jstring += ']}';
+		
+		// siblings
+		if (curreply.next(".reply").length > 0) {
+			jstring = jsonreplyhelper(jstring, curreply.nextAll("div:first"));
+		}
+		return jstring;
+	}
+	
+	function jsonreplyhelper(jstring, curreply){
+		// current reply info
+		jstring += ', { "reply" : "' + curreply.children(".reply_text").text() + '", "vote" : "' + curreply.children(".reply_votes").text() +
+				'", "replies" :[';
+		
+		//children
+		if (curreply.children(".replies").children(".reply").length > 0) {
+			jstring = firstreply(jstring, curreply.children(".replies").children(".reply").first());
+		}
+		jstring += ']}';
+		
+		// siblings
+		if (curreply.next(".reply").length > 0) {
+			jstring = jsonreplyhelper(jstring, curreply.nextAll("div:first"));
+		}
+		return jstring;
+	}
