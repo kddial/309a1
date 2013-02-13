@@ -38,7 +38,7 @@
 										'</div>' +
 										'&nbsp;&nbsp; <a class="view_comments"> View comments</a> &nbsp;&nbsp;' +
 										'<a class="replylink">Reply</a>&nbsp;&nbsp;' +
-										'<a class="link" href="' + data.topics[i].link + '">Link</a>' +
+										'<a class="urllink" href="' + data.topics[i].link + '">Link</a>' +
 										'<p class="replyview">' +
 											'<textarea cols="80" rows="5"></textarea>' +
 											'<br>' +
@@ -58,7 +58,7 @@
 			var ugh = eval("(" + makejsonstring() + ')');
 			$.ajax({
 				type: "POST",
-				url: "/sendjson",
+				url: "/post",
 				data:  JSON.stringify(ugh),
 				dataType: "json"
 				});
@@ -238,7 +238,7 @@
 								'</div>' +
 								'&nbsp;&nbsp; <a class="view_comments"> View comments</a> &nbsp;&nbsp;' +
 								'<a class="replylink">Reply</a>&nbsp;&nbsp;' +
-								'<a class="link" href="'
+								'<a class="urllink" href="'
 
 			var topic_html_end = '">Link</a>' +
 								'<p class="replyview">' +
