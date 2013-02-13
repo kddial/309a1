@@ -2,12 +2,13 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 
-var stuff = [ {topic: '-1', vote: '-1', link: 'http://www.google.ca', replies: "[]"} ];
+var stuff;
+//var stuff = [ {topic: '-1', vote: '-1', link: 'http://www.google.ca', replies: "[]"} ];
 
 http.createServer(function (request, response) {
 
 	if (request.url == "/add") {
-		stuff = { "topics": [
+		stuff = [
 			  	{
 					"topic": "Topic 0",
 					"vote": 0,
@@ -50,8 +51,7 @@ http.createServer(function (request, response) {
 					]
 				}
 				]
-			}
-
+		response.end()
 	} else if (request.url == "/cheat") {
 		request.on('data', function (data) {
 		cheat = data;
