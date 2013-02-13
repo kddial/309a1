@@ -84,6 +84,8 @@
 									'<div class="replies"> ADD REPLIES HERE LATER </div>' +
 								'</div>';
 
+				//readReplies(data.topics[i].replies); // test read replies -kevin
+
 				$('.topicarea').append(output);
 			}
 		});
@@ -122,7 +124,7 @@
 		return jstring;
     	}
     
-    	function jsontopichelper(jstring, curtopic){
+    function jsontopichelper(jstring, curtopic){
 		jstring += ", { topic : " + curtopic.children(".topic_header").children(".topictitle").text() + ", "
 				+ "vote : " + curtopic.children(".topic_header").children(".topic_votes").text() + ", replies: [";
 				
@@ -135,6 +137,39 @@
 		}
 		return jstring; 
 	}
+
+	// Fix the empty array [] encoding 
+	function fixedEncodeURI (str) {
+	    return str.replace("%5B%5D", "[]");
+	}
+
+	// Read replies, repliseData can be a JSON object or string of empty array
+	function readReplies(repliesData) {
+		// check if data is object
+		if( typeof repliesData == "object" ) {
+
+			// Make sure list is not emtpy
+			if (repliesData.length == 0) {
+				$('body').append('<p>Q[]Q</p>');
+			} else {
+
+				// Loop through all the replies
+				for (var j=0;j<repliesData.length;j++)
+				{
+					// print object's reply message
+					$('body').append('<p> Reply msg : ' + repliesData[j].reply + '&nbsp;&nbsp;&nbsp;Vote : ' +  repliesData[j].vote + '</p>');
+					//recurse on this objects replies
+					readReplies(repliesData[j].replies);
+				}
+			}
+
+		} else {
+			// empty array, just return
+			repliesData = fixedEncodeURI(repliesData);
+			$('body').append('<p>' + repliesData + '</p>');
+		}
+	}
+
 
 	</script>
 </head>
