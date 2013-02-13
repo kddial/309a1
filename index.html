@@ -1,113 +1,320 @@
-var http = require('http');
-var fs = require('fs');
-var path = require('path');
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSC309 Assignment 1</title>
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
+		<link type="text/css" href="index.css" rel="stylesheet"> </link>
+		<script type="text/javascript">
 
-var topic_list = [];
+		function topicsort(a, b){
+			var firstelement = parseFloat($(a).children(".topic_header").children(".topic_votes").text());
+			var secondelement = parseFloat($(b).children(".topic_header").children(".topic_votes").text());
+			return (firstelement < secondelement) ? 1 : (firstelement > secondelement) ? -1 : 0;
+		}
 
-http.createServer(function (request, response) {
+		function replysort(a, b){
+			var firstelement = parseFloat($(a).children(".reply_votes").text());
+			var secondelement = parseFloat($(b).children(".reply_votes").text());
+			return (firstelement < secondelement) ? 1 : (firstelement > secondelement) ? -1 : 0;
+		}
 
-	if (request.url == "/post") {
-		console.log("POST");
-		request.setEncoding()
-		request.on('data', function (data) {
-			var topicjson = eval("(" + data + ')');
-			//console.log(random.topics);
-			topic_list = topicjson.topics;
-		});
-		response.end();
-	} else if (request.url == "/add") {
-		console.log("ADD");
-		topic_list = [
-			  	{
-					"topic": "Topic 0",
-					"vote": 0,
-					"link": "url.com",
-					"replies": []
-				},
+		function loadHTML() {
+			$.get("/get",
+			function(data) {
+
+				var output;
+				// Clear all the contents inside topic 
+				$('.topicarea').html("");
+
+				// Loop through all the topics and append the HTML tags to output
+				for (var i=0;i<data.topics.length;i++)
 				{
-					"topic": "Topic 1",
-					"vote": 1,
-					"link": "http://www.google.ca/",
-					"replies": [ 
-						{
-							"reply": "Reply 1a", 
-							"vote": 0, 
-							"replies": []
-						} 
-					]
-				},
-				{
-					"topic": "Topic 2",
-					"vote": 99,
-					"link": "123",
-					"replies" : [
-						{
-							"reply": "Reply 2a", 
-							"vote": 2, 
-							"replies": []
-						},
-						{
-							"reply": "Reply 2b", 
-							"vote": 5, 
-							"replies": [
-								{
-									"reply": "Reply 2ba", 
-									"vote": 10, 
-									"replies": []
-								}
-							]
-						}
-					]
+					output = 		'<div class="topic">' +
+										'<div class="topic_header">' +
+											'<div class="vote">^</div>' +
+											'<div class="topic_votes">' + data.topics[i].vote + '</div>' +
+											'<div class="topictitle"> &nbsp;' + data.topics[i].topic + 
+											'</div>' +
+										'</div>' +
+										'&nbsp;&nbsp; <a class="view_comments"> View comments</a> &nbsp;&nbsp;' +
+										'<a class="replylink">Reply</a>&nbsp;&nbsp;' +
+										'<a class="urllink" href="' + data.topics[i].link + '">Link</a>' +
+										'<p class="replyview">' +
+											'<textarea cols="80" rows="5"></textarea>' +
+											'<br>' +
+											'<a class="submitlink">Submit</a>' +
+										'</p>' +
+										'<div class="replies">'; 
+					output += readReplies(data.topics[i].replies);
+					output += '</div></div>';
+					$('.topicarea').append(output);
 				}
-				]
-		//console.log(topic_list);
-		response.end()
-	} else if (request.url == "/clear") {
-		topic_list = [];
-		//console.log(topic_list);
-		response.end();	
-	} else if (request.url == "/get") {
-		console.log("GET");
-		response.writeHead(200, {'Content-Type': 'application/json'});
-		response.end(JSON.stringify( {topics: topic_list} ));
-	} else {
-	   var filePath = '.' + request.url;
-	   if (filePath == './')
-		   filePath = './test2.html';
+			});
+			// TODO: add sorting algo here on ever load
+			return true;
+		}
 		
-	   var extname = path.extname(filePath);
-	   var contentType = 'text/html';
-	   switch (extname) {
-		   case '.js':
-			   contentType = 'text/javascript';
-			   break;
-		   case '.css':
-			   contentType = 'text/css';
-			   break;
-	   }
+		function sendjson() {
+			var ugh = eval("(" + makejsonstring() + ')');
+			$.ajax({
+				type: "POST",
+				url: "/post",
+				data:  JSON.stringify(ugh),
+				dataType: "json"
+				});
+			return true;
+		}
 
-	   path.exists(filePath, function(exists) {
+		function makejsonstring() {
+			var jstring = '{ "topics" : [';
+			var firsttopic = $(".topicarea").children(".topic").first();
+			//first topic info
+			jstring += '{ "topic" : "' + firsttopic.children(".topic_header").children(".topictitle").text() + '", '
+					+ '"vote" : "' + firsttopic.children(".topic_header").children(".topic_votes").text()
+					+ '", "link" : "' + firsttopic.children(".link").attr("href") + '", "replies" : [';
+						
+			// do children
+			if (firsttopic.children(".replies").children(".reply").length > 0) {
+				jstring = firstreply(jstring, firsttopic.children(".replies").children(".reply").first());
+			}
+			jstring += ']}';
+					
+			// do other topics
+			if (firsttopic.next(".topic").length > 0) {
+				jstring = jsontopichelper(jstring, firsttopic.nextAll("div:first"));
+			}
+			jstring += ']}';
+			return jstring;
+		}
+		
+		function jsontopichelper(jstring, curtopic){
+			jstring += ', { "topic" : "' + curtopic.children(".topic_header").children(".topictitle").text() + '", '
+					+ '"vote" : "' + curtopic.children(".topic_header").children(".topic_votes").text() 
+					+ '", "link" : "' + curtopic.children(".link").attr("href") + '", "replies": [';
+					
+			// do children
+			if (curtopic.children(".replies").children(".reply").length > 0) {
+				jstring = firstreply(jstring, curtopic.children(".replies").children(".reply").first());
+			}
+			jstring += ']}';
+			
+			//do next topic
+			if (curtopic.next(".topic").length > 0) {
+				jstring = jsontopichelper(jstring, curtopic.nextAll("div:first"));
+			}
+			return jstring; 
+		}
+		
+		function firstreply(jstring, curreply){
+			// first reply info
+			jstring += '{ "reply" : "' + curreply.children(".reply_text").text() + '" , "vote" : "' + curreply.children(".reply_votes").text() +
+					'", "replies" : [';
+			
+			//children
+			if (curreply.children(".replies").children(".reply").length > 0) {
+				jstring = firstreply(jstring, curreply.children(".replies").children(".reply").first());
+			}
+			jstring += ']}';
+			
+			// siblings
+			if (curreply.next(".reply").length > 0) {
+				jstring = jsonreplyhelper(jstring, curreply.nextAll("div:first"));
+			}
+			return jstring;
+		}
+		
+		function jsonreplyhelper(jstring, curreply){
+			// current reply info
+			jstring += ', { "reply" : "' + curreply.children(".reply_text").text() + '", "vote" : "' + curreply.children(".reply_votes").text() +
+					'", "replies" :[';
+			
+			//children
+			if (curreply.children(".replies").children(".reply").length > 0) {
+				jstring = firstreply(jstring, curreply.children(".replies").children(".reply").first());
+			}
+			jstring += ']}';
+			
+			// siblings
+			if (curreply.next(".reply").length > 0) {
+				jstring = jsonreplyhelper(jstring, curreply.nextAll("div:first"));
+			}
+			return jstring;
+		}
 
-		   if (exists) {
-			   fs.readFile(filePath, function(error, content) {
-				   if (error) {
-					   response.writeHead(500);
-					   response.end();
-				   }
-				   else {
-					   response.writeHead(200, {'Content-Type': contentType });
-					   response.write(content, 'utf-8');
-					   response.end();
-				   }
-			   });
-		   }
-		   else {
-			   response.writeHead(404);
-			   response.end();
-		   }
+		// Fix the empty array [] encoding 
+		function fixedEncodeURI (str) {
+			return str.replace("%5B%5D", "[]");
+		}
+
+		// Read replies, repliseData can be a JSON object or string of empty array
+		function readReplies(repliesData) {
+			// check if data is object
+			var output = '';
+			if( typeof repliesData == "object" ) {
+
+				// Make sure list is not emtpy
+				if (repliesData.length == 0) {
+					//$('body').append('<p>Q[]Q</p>');
+				} else {
+
+					// Loop through all the replies
+					for (var j=0;j<repliesData.length;j++)
+					{
+						// Add the HTML tags for reply
+						output = '<div class="reply">' + 
+									'<p class="parent"></p>' +
+										'<div class="vote">^</div>' +
+										'<div class="reply_votes">' + repliesData[j].vote + '</div>' + 
+										'<div class="reply_text">' + repliesData[j].reply + '</div>' + 
+										'<a class="replylink">Reply</a>' +
+										'<p class="replyview" style="display:none;">' +
+											'<textarea rows="5" cols="80"></textarea><br>' +
+											'<a class="submitlink">Submit</a>' +
+										'</p>' +
+									'<div class="replies">';
+						output += readReplies(repliesData[j].replies);
+						output += '</div></div>';
+					}
+				}
+
+			} else {
+				// empty array from a new topic
+				repliesData = fixedEncodeURI(repliesData);
+				//$('body').append('<p>' + repliesData + '</p>');
+			}
+			return output;
+		}
+
+		</script>
+	</head>
+
+	<body>
+		<div class="topicarea">
+		</div>
+
+		<div class="newtopic">
+			<button type="button" class="newtopicbutton">New Topic</button>
+			<p class="topicview">
+				<textarea class="topictext" rows="5" cols="80"></textarea><br>
+				<textarea class="topiclink" rows="1" cols="80"></textarea><br>
+				<a class="submittopic">Submit Topic</a>
+			</p>
+		</div>
+
+		<script language="javascript" type="text/javascript">
+
+		$(document).ready(function(){
+
+			// Load the HTML from server
+			loadHTML();
+
+			var reply_html_begin =	
+							'<div class="reply">' + 
+								'<p class="parent"></p>' +
+									'<div class="vote">^</div>' +
+									'<div class="reply_votes">0</div>' +
+									'<div class="reply_text">';
+
+			var reply_html_end =	
+									'</div>' +
+									'&nbsp;&nbsp;<a class="replylink">Reply</a>' +
+									'<p class="replyview" style="display:none;">' +
+										'<textarea rows="5" cols="80"></textarea><br>' +
+										'<a class="submitlink">Submit</a>' +
+									'</p>' +
+								'<div class="replies">' +
+								'</div>' + 
+							'</div>';
+
+			var topic_html_begin =  
+							'<div class="topic">' +
+								'<div class="topic_header">' +
+									'<div class="vote">^</div>' +
+									'<div class="topic_votes">0</div>' +
+									'<div class="topictitle"> &nbsp;'
+
+			var topic_html_middle =			
+									'</div>' +
+								'</div>' +
+								'&nbsp;&nbsp; <a class="view_comments"> View comments</a> &nbsp;&nbsp;' +
+								'<a class="replylink">Reply</a>&nbsp;&nbsp;' +
+								'<a class="urllink" href="'
+
+			var topic_html_end = '">Link</a>' +
+								'<p class="replyview">' +
+									'<textarea cols="80" rows="5"></textarea>' +
+									'<br>' +
+									'<a class="submitlink">Submit</a>' +
+								'</p>' +
+								'<div class="replies"> </div>' +
+							'</div>';
+
+			// Clicking on the submit reply link
+			$(document).on("click", ".submitlink", function() {
+				var output = $(this).parent().find("textarea").val(); // The text inside the textarea
+				$(this).parent().find("textarea").val("");  // Clear the text inside the textarea
+				$(this).parent().parent().children(".replies").append(reply_html_begin + output + reply_html_end);
+				$(this).parent().toggle();  // Toggle the replyview to disapeer after hitting submit
+											// should do error checking to make sure text isnt empty
+				$(this).parent().parent().parent().siblings(".replies").toggle();	// Display comments
+				sendjson();
+			});
+
+			// Clicking on view_comments
+			$(document).on("click", ".view_comments", function () {
+				$(this).siblings(".replies").toggle();
+			});
+
+			// Clicking on Reply link
+			$(document).on("click", ".replylink", function() {
+				// Clicking on Reply link
+				$(this).siblings(".replyview").toggle();
+			});
+
+			// New topic button
+			$(document).on("click", ".newtopicbutton", function() {
+				$(this).siblings(".topicview").toggle();
+			});
+
+			// Submitting a new topic by clicking on submit link
+			$(document).on("click", ".submittopic", function() {
+				var output = $(this).siblings(".topictext").val();
+				var tlink = $(this).siblings(".topiclink").val();
+				$(this).siblings(".topictext").val("");
+				$(this).siblings(".topiclink").val("");
+				$(this).siblings(".topicview").toggle();
+				$(".topicarea").append(topic_html_begin + output + topic_html_middle + tlink + topic_html_end);
+				$(this).parent().toggle();
+				//sendstuff(output, tlink);
+				sendjson();
+			});
+
+			// Sort on every vote clicked
+			$(document).on("click", ".vote",  function () {
+				// If topic vote button, this does nothing, otherwise, increment the vote for this reply.
+				var replynum = parseFloat($(this).siblings(".reply_votes").text()) + 1;
+				$(this).siblings(".reply_votes").text(replynum);
+
+				// Increment the vote for the topic regardless of which vote button.
+				var topicnum = parseFloat($(this).closest(".topic").children(".topic_header").children(".topic_votes").text()) + 1;
+				$(this).closest(".topic").children(".topic_header").children(".topic_votes").text(topicnum);
+
+				// Sort the topics as there is a change in the number of votes.
+				var topiclist = $(".topic").get();
+				topiclist.sort(topicsort);
+				$.each(topiclist, function(x, y) {$(".topicarea").append(y)});
+
+				// Sort the reply and its siblings.
+				var replylist = $(this).closest(".replies").children(".reply").get();
+				replylist.sort(replysort);
+				$.each(replylist, function(x, y) {$(this).closest(".replies").append(y)});
+				
+				sendjson();
+			});
+
 		});
-	};
-}).listen(31135);
 
-console.log('Server running at http://127.0.0.1:31135/');
+		</script>
 
+	</body>
+</html>
