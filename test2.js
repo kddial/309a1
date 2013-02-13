@@ -53,6 +53,10 @@ http.createServer(function (request, response) {
 				]
 		console.log(stuff);
 		response.end()
+	} else if (request.url == "/clear") {
+		stuff = [];
+		console.log(stuff);
+		response.end();
 	} else if (request.url == "/cheat") {
 		request.on('data', function (data) {
 		cheat = data;
