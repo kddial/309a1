@@ -1,73 +1,66 @@
 ﻿textarea {
    resize: none;
-   }
-
-.topic {
-   border: 3px solid #5E96CF;
-   }
-   
-.reply {
-        margin-left: 0;
-        padding-left: 50px;
-   }
-   
-.replyview {
-   display: none;
-   }
-   
-.replylink {
-   color: #647585;
-   text-decoration: underline;
-   }
-
-.view_comments {
-   color: #647585;
-   text-decoration: underline;
 }
 
-.link {
-   color: #647585;
-   text-decoration: underline;
+.topic {
+	border: 3px solid #5E96CF;
+}
+   
+.reply {
+	margin-left: 0;
+	padding-left: 50px;
+}
+   
+.replyview {
+	display: none;
+}
+   
+.replylink {
+	color: #647585;
+	text-decoration: underline;
+}
+
+.view_comments {
+	color: #647585;
+	text-decoration: underline;
+}
+
+.urllink {
+	color: #647585;
+	text-decoration: underline;
 }
    
 .submitlink {
-   color: blue;
-   text-decoration: underline;
-   }
+	color: blue;
+	text-decoration: underline;
+}
 
 .submittopic {
-   color: blue;
-   text-decoration: underline;
-   }
-   
-.ita {
-   display: none;
-   resize: none;
-   }
-
+	color: blue;
+	text-decoration: underline;
+}
 
 .topictitle {
-   font-weight: bold;
+	font-weight: bold;
 }    
 
-
 .topicview {
-   display: none;
-   }
+	display: none;
+}
 
 .topic_header {
-   background-color: #E0FFF0;
-   overflow: hidden;
-   }
+	background-color: #E0FFF0;
+	overflow: hidden;
+}
 
 .vote {
-   float:left;
+	float:left;
 }
 
 .topic_votes {
-   float:left;
+	float:left;
 }
 
 .newtopic {
-  border: 3px solid #5E96CF;
+	border: 3px solid #5E96CF;
 }
