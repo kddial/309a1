@@ -100,6 +100,42 @@
 		return true;
 	}
 
+	function makejsonstring() {
+		var jstring = "{ topics : [";
+		var firsttopic = $(".topicarea").children(".topic").first();
+		//first topic info
+		jstring += "{ topic : " + firsttopic.children(".topic_header").children(".topictitle").text() + ", "
+				+ "vote : " + firsttopic.children(".topic_header").children(".topic_votes").text()
+					+ ", replies : [";
+					
+		// do children
+		if (firsttopic.children(".replies").children(".reply").length > 0) {
+			
+		}
+		jstring += "]}";
+				
+		// do other topics
+		if (firsttopic.next(".topic").length > 0) {
+			jstring = jsontopichelper(jstring, firsttopic.nextAll("div:first"));
+		}
+		jstring += "]}";
+		return jstring;
+    	}
+    
+    	function jsontopichelper(jstring, curtopic){
+		jstring += ", { topic : " + curtopic.children(".topic_header").children(".topictitle").text() + ", "
+				+ "vote : " + curtopic.children(".topic_header").children(".topic_votes").text() + ", replies: [";
+				
+		// do children
+		jstring += "]}";
+		
+		//do next topic
+		if (curtopic.next(".topic").length > 0) {
+			jstring = jsontopichelper(jstring, curtopic.nextAll("div:first"));
+		}
+		return jstring; 
+	}
+
 	</script>
 </head>
 
