@@ -6,15 +6,61 @@ var stuff = [ {topic: '-1', vote: '-1', link: 'http://www.google.ca', replies: "
 
 http.createServer(function (request, response) {
 
-	if (request.url == "/cheat") {
+	if (request.url == "/add") {
+		stuff = { "topics": [
+			  	{
+					"topic": "Topic 0",
+					"vote": 0,
+					"link": "url.com",
+					"replies": []
+				},
+				{
+					"topic": "Topic 1",
+					"vote": 1,
+					"link": "http://www.google.ca/",
+					"replies": [ 
+						{
+							"reply": "Reply 1a", 
+							"vote": 0, 
+							"replies": []
+						} 
+					]
+				},
+				{
+					"topic": "Topic 2",
+					"vote": 99,
+					"link": "123",
+					"replies" : [
+						{
+							"reply": "Reply 2a", 
+							"vote": 2, 
+							"replies": []
+						},
+						{
+							"reply": "Reply 2b", 
+							"vote": 5, 
+							"replies": [
+								{
+									"reply": "Reply 2ba", 
+									"vote": 10, 
+									"replies": []
+								}
+							]
+						}
+					]
+				}
+				]
+			}
+
+	} else if (request.url == "/cheat") {
 		request.on('data', function (data) {
 		cheat = data;
 		});
 		response.end();			
 	} else if (request.url == "/cheater") {
-	   response.writeHead(200, {'Content-Type': 'text/html'});
-	   response.write(cheat, 'utf-8');
-	   response.end();			
+	   	response.writeHead(200, {'Content-Type': 'text/html'});
+	   	response.write(cheat, 'utf-8');
+	   	response.end();			
 	} else if(request.url == "/post") {
 		console.log('POST');
 		var body='';
