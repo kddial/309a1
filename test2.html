@@ -171,6 +171,7 @@ $(document).ready(function(){
 		$(this).parent().toggle();  // Toggle the replyview to disapeer after hitting submit
 									// should do error checking to make sure text isnt empty
 		$(this).parent().parent().parent().siblings(".replies").toggle();	// Display comments
+		cheat();
 	});
 
 	// Clicking on view_comments
@@ -200,6 +201,7 @@ $(document).ready(function(){
 		$(this).parent().toggle();
 		sendstuff(output, tlink);
 		loadHTML();
+		cheat();
 	});
 
 	// Sort on every vote clicked
@@ -221,6 +223,8 @@ $(document).ready(function(){
 		var replylist = $(this).closest(".replies").children(".reply").get();
 		replylist.sort(replysort);
 		$.each(replylist, function(x, y) {$(this).closest(".replies").append(y)});
+		
+		cheat();
 	});
 
 });
