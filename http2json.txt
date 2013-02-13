@@ -4,7 +4,7 @@
 		//first topic info
 		jstring += '{ "topic" : "' + firsttopic.children(".topic_header").children(".topictitle").text() + '", '
 				+ '"vote" : "' + firsttopic.children(".topic_header").children(".topic_votes").text()
-					+ '", "replies" : [';
+				+ '", "link" : "' + firsttopic.children(".link").attr("href") + '", "replies" : [';
 					
 		// do children
 		if (firsttopic.children(".replies").children(".reply").length > 0) {
