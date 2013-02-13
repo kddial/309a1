@@ -13,7 +13,6 @@
 			{
 				"reply": "Reply 1a", 
 				"vote": 0, 
-				"link": "123",
 				"replies": []
 			} 
 		]
@@ -26,18 +25,15 @@
 			{
 				"reply": "Reply 2a", 
 				"vote": 2, 
-				"link": "555",
 				"replies": []
 			},
 			{
 				"reply": "Reply 2b", 
 				"vote": 5, 
-				"link": "http://www.com/",
 				"replies": [
 					{
 						"reply": "Reply 2ba", 
 						"vote": 10, 
-						"link": "test",
 						"replies": []
 					}
 				]
