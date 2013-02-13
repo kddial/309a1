@@ -37,6 +37,7 @@
 					{
 						"reply": "Reply 2ba", 
 						"vote": 10, 
+						"link": "test",
 						"replies": []
 					}
 				]
