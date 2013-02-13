@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 
-var stuff = [ {topic: '-1', vote: '-1', replies: "[]"} ];
+var stuff = [ {topic: '-1', vote: '-1', link: 'http://www.google.ca', replies: "[]"} ];
 
 http.createServer(function (request, response) {
 
@@ -12,7 +12,7 @@ http.createServer(function (request, response) {
 			request.on('data', function (data) {
 			body +=data;
 			var random = body.split("&");
-			var ins = { topic: random[0].slice(6), vote: random[1].slice(5), replies: random[2].slice(8)};
+			var ins = { topic: random[0].slice(6), vote: random[1].slice(5), link: random[2].slice(5), replies: random[3].slice(8)};
 			stuff.push(ins);
 			console.log(stuff);
 		});
@@ -26,7 +26,7 @@ http.createServer(function (request, response) {
 		   var filePath = '.' + request.url;
 		   if (filePath == './')
 			   filePath = './test2.html';
-
+			
 		   var extname = path.extname(filePath);
 		   var contentType = 'text/html';
 		   switch (extname) {
@@ -57,15 +57,9 @@ http.createServer(function (request, response) {
 				   response.writeHead(404);
 				   response.end();
 			   }
-	    });
-   	/* else //if ((request.method=='GET') & (!(request.url == "/") || (request.url == "/index.css"))) {
-		{console.log("GET");
-		response.writeHead(200, {'Content-Type': 'text/plain' });
-		var ret = "hello"
-		//console.log(ret);
-		response.end("hello", 'utf-8');
-	} */
+			});
 		};
+	
 	}
 }).listen(31135);
 
