@@ -2,19 +2,9 @@
    resize: none;
    }
 
-
 .topic {
    border: 3px solid #5E96CF;
    }
-
-
-.child {
-
-
-}    
-   
-.replies {
-}    
    
 .reply {
         margin-left: 0;
@@ -31,6 +21,11 @@
    }
 
 .view_comments {
+   color: #647585;
+   text-decoration: underline;
+}
+
+.link {
    color: #647585;
    text-decoration: underline;
 }
@@ -72,12 +67,6 @@
 .topic_votes {
    float:left;
 }
-   
-.arrow {
-
-
-}
-
 
 .newtopic {
   border: 3px solid #5E96CF;
