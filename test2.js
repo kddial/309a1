@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 
-var stuff;
+var stuff = [];
 //var stuff = [ {topic: '-1', vote: '-1', link: 'http://www.google.ca', replies: "[]"} ];
 
 http.createServer(function (request, response) {
@@ -51,6 +51,7 @@ http.createServer(function (request, response) {
 					]
 				}
 				]
+		console.log(stuff);
 		response.end()
 	} else if (request.url == "/cheat") {
 		request.on('data', function (data) {
