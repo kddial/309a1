@@ -22,7 +22,8 @@
     
     function jsontopichelper(jstring, curtopic){
 		jstring += ', { "topic" : "' + curtopic.children(".topic_header").children(".topictitle").text() + '", '
-				+ '"vote" : ' + curtopic.children(".topic_header").children(".topic_votes").text() + ', "replies": [';
+				+ '"vote" : ' + curtopic.children(".topic_header").children(".topic_votes").text() 
+				+ '", "link" : "' + curtopic.children(".link").attr("href") + ', "replies": [';
 				
 		// do children
 		if (curtopic.children(".replies").children(".reply").length > 0) {
