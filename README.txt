@@ -16,6 +16,7 @@ c0jiansh
 
 Desgin Documentation:
 
+REST API:
 Resource:		GET /clear
 Description:	Deletes all topics with their replies on the server.
 
@@ -28,8 +29,11 @@ Description:	Gets a list of topics with their replies from the server.
 Resource:		POST /post
 Description:	Send the topics and replies represented as a JSON Object to the server
 
+
 How the server and client communicates:
 The client sends all of its information everytime some information gets modified.  For instance, on every new topic, new reply or upvote, the client will send its JSON representation of everything to the server so it can store the updated version.  This ensures that all other clients will get the updated data on the next "/get" call.  However this may causes some concurrency problems; as two clients modify the data at the same time, only the client that submitted last will have its information stored on the database on the server.  We were informed by the professor that only one client will be modifying the server at a time, so this concurrency problem should not occur.
+Note: The database variable on the server is called "stuff" and contains the JSON representation of all topics with their replies.
+
 
 How our site works:
 explain what you click on does what
