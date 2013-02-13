@@ -6,7 +6,16 @@ var stuff = [ {topic: '-1', vote: '-1', link: 'http://www.google.ca', replies: "
 
 http.createServer(function (request, response) {
 
-	if(request.url == "/post") {
+	if (request.url == "/cheat") {
+		request.on('data', function (data) {
+		cheat = data;
+		});
+		response.end();			
+	} else if (request.url == "/cheater") {
+	   response.writeHead(200, {'Content-Type': 'text/html'});
+	   response.write(cheat, 'utf-8');
+	   response.end();			
+	} else if(request.url == "/post") {
 		console.log('POST');
 		var body='';
 			request.on('data', function (data) {
