@@ -100,41 +100,92 @@
 		});
 		return true;
 	}
+	
+	function sendjson() {
+		$('body').append(makejsonstring() + "<br>");
+		var ugh = eval("(" + makejsonstring() + ')');
+		$.ajax({
+			type: "POST",
+			url: "/sendjson",
+			data:  JSON.stringify(ugh),
+			dataType: "json"
+			});
+		return true;
+	}
 
-	function makejsonstring() {
-		var jstring = "{ topics : [";
+  function makejsonstring() {
+		var jstring = '{ "topics" : [';
 		var firsttopic = $(".topicarea").children(".topic").first();
 		//first topic info
-		jstring += "{ topic : " + firsttopic.children(".topic_header").children(".topictitle").text() + ", "
-				+ "vote : " + firsttopic.children(".topic_header").children(".topic_votes").text()
-					+ ", replies : [";
+		jstring += '{ "topic" : "' + firsttopic.children(".topic_header").children(".topictitle").text() + '", '
+				+ '"vote" : "' + firsttopic.children(".topic_header").children(".topic_votes").text()
+				+ '", "link" : "' + firsttopic.children(".link").attr("href") + '", "replies" : [';
 					
 		// do children
 		if (firsttopic.children(".replies").children(".reply").length > 0) {
-			
+			jstring = firstreply(jstring, firsttopic.children(".replies").children(".reply").first());
 		}
-		jstring += "]}";
+		jstring += ']}';
 				
 		// do other topics
 		if (firsttopic.next(".topic").length > 0) {
 			jstring = jsontopichelper(jstring, firsttopic.nextAll("div:first"));
 		}
-		jstring += "]}";
+		jstring += ']}';
 		return jstring;
-    	}
+    }
     
     function jsontopichelper(jstring, curtopic){
-		jstring += ", { topic : " + curtopic.children(".topic_header").children(".topictitle").text() + ", "
-				+ "vote : " + curtopic.children(".topic_header").children(".topic_votes").text() + ", replies: [";
+		jstring += ', { "topic" : "' + curtopic.children(".topic_header").children(".topictitle").text() + '", '
+				+ '"vote" : "' + curtopic.children(".topic_header").children(".topic_votes").text() 
+				+ '", "link" : "' + curtopic.children(".link").attr("href") + '", "replies": [';
 				
 		// do children
-		jstring += "]}";
+		if (curtopic.children(".replies").children(".reply").length > 0) {
+			jstring = firstreply(jstring, curtopic.children(".replies").children(".reply").first());
+		}
+		jstring += ']}';
 		
 		//do next topic
 		if (curtopic.next(".topic").length > 0) {
 			jstring = jsontopichelper(jstring, curtopic.nextAll("div:first"));
 		}
 		return jstring; 
+	}
+	function firstreply(jstring, curreply){
+		// first reply info
+		jstring += '{ "reply" : "' + curreply.children(".reply_text").text() + '" , "vote" : "' + curreply.children(".reply_votes").text() +
+				'", "replies" : [';
+		
+		//children
+		if (curreply.children(".replies").children(".reply").length > 0) {
+			jstring = firstreply(jstring, curreply.children(".replies").children(".reply").first());
+		}
+		jstring += ']}';
+		
+		// siblings
+		if (curreply.next(".reply").length > 0) {
+			jstring = jsonreplyhelper(jstring, curreply.nextAll("div:first"));
+		}
+		return jstring;
+	}
+	
+	function jsonreplyhelper(jstring, curreply){
+		// current reply info
+		jstring += ', { "reply" : "' + curreply.children(".reply_text").text() + '", "vote" : "' + curreply.children(".reply_votes").text() +
+				'", "replies" :[';
+		
+		//children
+		if (curreply.children(".replies").children(".reply").length > 0) {
+			jstring = firstreply(jstring, curreply.children(".replies").children(".reply").first());
+		}
+		jstring += ']}';
+		
+		// siblings
+		if (curreply.next(".reply").length > 0) {
+			jstring = jsonreplyhelper(jstring, curreply.nextAll("div:first"));
+		}
+		return jstring;
 	}
 
 	// Fix the empty array [] encoding 
@@ -186,6 +237,7 @@
 </head>
 
 </body>
+<button onclick=sendjson()>Ugh</button>
 <div class="topicarea">
 </div>
 
@@ -209,9 +261,11 @@ $(document).ready(function(){
 					'<div class="reply">' + 
 						'<p class="parent"></p>' +
 							'<div class="vote">^</div>' +
-							'<div class="reply_votes">0</div>';
+							'<div class="reply_votes">0</div>' +
+							'<div class="reply_text">';
 
-	var reply_html_end =			
+	var reply_html_end =	
+							'</div>' +
 							'&nbsp;&nbsp;<a class="replylink">Reply</a>' +
 							'<p class="replyview" style="display:none;">' +
 								'<textarea rows="5" cols="80"></textarea><br>' +
