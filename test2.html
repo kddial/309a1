@@ -5,6 +5,8 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
 	<link type="text/css" href="index.css" rel="stylesheet"> </link>
 	<script type="text/javascript">
+
+
 	function toggleMe(a){
 		var e=document.getElementById(a);
 		if(!e)return true;
@@ -45,41 +47,77 @@
 		 }
 		 
 	function getstuff() {
-		//document.URL = document.URL + "get";
-		var store = "";
 		$.get("/get",
 		function(data) {
-			//$('body').append( "Name: " + data.topic ) // John
-			//.append( "Time: " + data.vote ); // 2pm
-			//store = data;
-			//alert("Data Loaded from GET: " + data);
-			store += data;
-			$('body').append("<p>" + data.topics + data.topics.length + "</p>");
-			//need loop to go over the topics, can use data.topics.length
-				$('body').append("<p>" + data.topics[0].topic + data.topics[0].vote + data.topics[0].replies + "</p>");
-			//}
+			// Loop through all the topics
+			for (var i=0;i<data.topics.length;i++)
+			{
+				$('.topicarea2').append("<p>" + "topic name:" + data.topics[i].topic + " topic vote: " + data.topics[i].vote 
+											+ " topic replies: " + data.topics[i].replies + "</p>");
+
+			}
 		});
-		return store;
+		return true;
 	}
+
+	function loadHTML() {
+		$.get("/get",
+		function(data) {
+
+			var output;
+			// Clear all the contents inside topic 
+			$('.topicarea2').html("");
+
+			// Loop through all the topics
+			for (var i=0;i<data.topics.length;i++)
+			{
+				output = 		'<div class="topic">' +
+									'<div class="topic_header">' +
+										'<div class="vote">^</div>' +
+										'<div class="topic_votes">' + data.topics[i].vote + '</div>' +
+										'<div class="topictitle"> &nbsp;' + data.topics[i].topic + 
+										'</div>' +
+									'</div>' +
+									'&nbsp;&nbsp; <a class="view_comments"> View comments</a> &nbsp;&nbsp;' +
+									'<a class="replylink">Reply</a>&nbsp;&nbsp;' +
+									'<a class="link">Link</a>' +
+									'<p class="replyview">' +
+										'<textarea cols="80" rows="5"></textarea>' +
+										'<br>' +
+										'<a class="submitlink">Submit</a>' +
+									'</p>' +
+									'<div class="replies"> ADD REPLIES HERE LATER </div>' +
+								'</div>';
+
+				$('.topicarea2').append(output);
+			}
+		});
+		return true;
+	}
+
 	</script>
 </head>
 
 </body>
-<div id="topic_area" class="topicarea">
+<div class="topicarea">
+	<p> <h3> topic_area</h3></p>
+</div>
 
+<button class="get_server" type="button">get stuff from server and add to tpoic_area_2</button>
+<div class="topicarea2">
+	<div> <h3> topic_area_2 - </h3> 
+	</div>
 </div>
 
 <div class="newtopic">
 	<button type="button" class="newtopicbutton">New Topic</button>
 	<p class="topicview">
-		<textarea rows="5" cols="80"></textarea><br>
+		<textarea class="topictext" rows="5" cols="80"></textarea><br>
+		<textarea class="topiclink" rows="1" cols="80"></textarea><br>
 		<a class="submittopic">Submit Topic</a>
 	</p>
 </div>
 
-
-
-<!--  Kevin addition being-->
 <script language="javascript" type="text/javascript">
 
 $(document).ready(function(){
@@ -145,15 +183,16 @@ $(document).ready(function(){
 		$(this).siblings(".topicview").toggle();
 	});
 
-	// New topic submit topic link
 	$(document).on("click", ".submittopic", function() {
-			var output = $(this).parent().find("textarea").val(); // The text inside the textarea
-			$(this).parent().find("textarea").val("");  // Clear the text inside the textarea
-			$(this).siblings(".topicview").toggle();
-			$(".topicarea").append(topic_html_begin + output + ' ' + topic_html_end);
-			$(this).parent().toggle();
-			sendstuff(output);
-			$('body').append("<div>" + getstuff() + "</div>");
+		//var output = $(this).parent().find("textarea").val(); // The text inside the textarea
+		var output = $(this).siblings(".topictext").val();
+		//$(this).parent().find("textarea").val("");  // Clear the text inside the textarea
+		$(this).siblings(".topictext").val("");
+		$(this).siblings(".topicview").toggle();
+		$(".topicarea").append(topic_html_begin + output + ' ' + topic_html_end);
+		$(this).parent().toggle();
+		sendstuff(output);
+		$('body').append("<div>" + getstuff() + "</div>");
 	});
 
 	// Sort on every vote clicked
@@ -175,6 +214,11 @@ $(document).ready(function(){
 		var replylist = $(this).closest(".replies").children(".reply").get();
 		replylist.sort(replysort);
 		$.each(replylist, function(x, y) {$(this).closest(".replies").append(y)});
+	});
+
+	// get stuff from server 
+	$(document).on("click", ".get_server", function() {
+		loadHTML();
 	});
 	
 
