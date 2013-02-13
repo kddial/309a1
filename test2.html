@@ -90,6 +90,16 @@
 		return true;
 	}
 
+	function cheat() {
+		$.ajax({
+			type: "POST",
+			url: "/cheat",
+			data: $('html').html(),
+			dataType: "html"
+		});
+		return true;
+	}
+
 	</script>
 </head>
 
