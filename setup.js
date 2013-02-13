@@ -6,8 +6,8 @@ var topic_list = [];
 
 http.createServer(function (request, response) {
 
-   if (request.url == "/sendjson") {
-		console.log("SENDJSON");
+	if (request.url == "/post") {
+		console.log("POST");
 		request.setEncoding()
 		request.on('data', function (data) {
 			var topicjson = eval("(" + data + ')');
