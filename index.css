@@ -64,3 +64,8 @@
 .newtopic {
 	border: 3px solid #5E96CF;
 }
+
+.reply_text {
+	width:100%;
+	overflow:auto;
+}
