@@ -20,7 +20,7 @@ http.createServer(function (request, response) {
 		topic_list = [
 			  	{
 					"topic": "Topic 0",
-					"vote": 0,
+					"vote": 5,
 					"link": "url.com",
 					"replies": []
 				},
@@ -38,12 +38,12 @@ http.createServer(function (request, response) {
 				},
 				{
 					"topic": "Topic 2",
-					"vote": 99,
+					"vote": 1,
 					"link": "123",
 					"replies" : [
 						{
 							"reply": "Reply 2a", 
-							"vote": 2, 
+							"vote": 5, 
 							"replies": []
 						},
 						{
