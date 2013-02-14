@@ -274,11 +274,14 @@
 			// Clicking on Reply link
 			$(document).on("click", ".replylink", function() {
 				// Clicking on Reply link
+				$(this).siblings(".replyview").children('textarea').val("");
 				$(this).siblings(".replyview").toggle();
 			});
 
 			// New topic button
 			$(document).on("click", ".newtopicbutton", function() {
+				$(this).siblings(".topicview").children('.topictext').val("");
+				$(this).siblings(".topicview").children('.topiclink').val("");			
 				$(this).siblings(".topicview").toggle();
 			});
 
