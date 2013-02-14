@@ -302,6 +302,10 @@
 					return false;
 				}
 				var tlink = $(this).siblings(".topiclink").val();
+				if (tlink.length == 0) {
+					alert("Your topic should have a link.");
+					return false;
+				}
 				$(this).siblings(".topictext").val("");
 				$(this).siblings(".topiclink").val("");
 				$(this).siblings(".topicview").toggle();
