@@ -16,7 +16,79 @@ http.createServer(function (request, response) {
 		response.end();
 	} else if (request.url == "/add") {
 		console.log("ADD");
-		topic_list = [{"topic":"Topic 0","vote":"10","link":"http://127.0.0.1:31135/","replies":[{"reply":"Reply 0a","vote":"5","replies":[]}]},{"topic":"Topic 1","vote":"5","link":"http://csc309.fabspaces.cc/","replies":[{"reply":"Reply 1a","vote":"3","replies":[{"reply":"Reply 1aa","vote":"0","replies":[]}]},{"reply":"Reply 1b","vote":"2","replies":[]}]},{"topic":"Topic 2","vote":"4","link":"http://www.google.ca/","replies":[{"reply":"Reply 2a","vote":"0","replies":[{"reply":"Reply 2aa","vote":"1","replies":[{"reply":"Reply 2aaa","vote":"0","replies":[{"reply":"Reply 2aaaa","vote":"0","replies":[]}]}]}]}]},{"topic":"Topic 3","vote":"0","link":"http://www.cdf.toronto.edu/","replies":[]}]
+		topic_list = [
+				{
+					"topic": "Topic 0",
+					"vote": "10",
+					"link": "http://127.0.0.1:31135/",
+					"replies": [
+						{
+							"reply": "Reply 0a",
+							"vote": "5",
+							"replies": []
+						}
+					]
+				},
+				{
+					"topic": "Topic 1",
+					"vote": "5",
+					"link": "http://csc309.fabspaces.cc/",
+					"replies": [
+						{
+							"reply": "Reply 1a",
+							"vote": "3",
+							"replies": [
+								{
+									"reply": "Reply 1aa",
+									"vote": "0",
+									"replies": []
+								}
+							]
+						},
+						{
+							"reply": "Reply 1b",
+							"vote": "2",
+							"replies": []
+						}
+					]
+				},
+				{
+					"topic": "Topic 2",
+					"vote": "4",
+					"link": "http://www.google.ca/",
+					"replies": [
+						{
+							"reply": "Reply 2a",
+							"vote": "0",
+							"replies": [
+								{
+									"reply": "Reply 2aa",
+									"vote": "1",
+									"replies": [
+										{
+											"reply": "Reply 2aaa",
+											"vote": "0",
+											"replies": [
+												{
+													"reply": "Reply 2aaaa",
+													"vote": "0",
+													"replies": []
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"topic": "Topic 3",
+					"vote": "0",
+					"link": "http://www.cdf.toronto.edu/",
+					"replies": []
+				}
+				];
 		response.end()
 	} else if (request.url == "/add2") {	
 		console.log("ADD2");
@@ -62,7 +134,7 @@ http.createServer(function (request, response) {
 						}
 					]
 				}
-				]
+				];
 		response.end()
 	} else if (request.url == "/clear") {
 		topic_list = [];
