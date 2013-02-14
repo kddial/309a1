@@ -23,6 +23,9 @@ Description:	Deletes all topics with their replies on the server.
 Resource:		GET /add
 Description:	Replaces the current topics with a set of sample topics and replies.
 
+Resource:       GET /add2
+Description:    Replaces the current topics with another set of sample topics and replies.
+
 Resource:		GET /get
 Description:	Gets a list of topics with their replies from the server.
 
