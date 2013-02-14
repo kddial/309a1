@@ -40,7 +40,7 @@
 										'<a class="replylink">Reply</a>&nbsp;&nbsp;' +
 										'<a class="urllink" href="' + data.topics[i].link + '">Link</a>' +
 										'<p class="replyview">' +
-											'<textarea cols="80" rows="5"></textarea>' +
+											'<textarea cols="80" rows="5" resize=none style="resize: none;"></textarea>' +
 											'<br>' +
 											'<a class="submitlink">Submit</a>' +
 										'</p>' +
@@ -167,8 +167,8 @@
 										'<div class="reply_votes">' + repliesData[j].vote + '</div>' + 
 										'<div class="reply_text">' + repliesData[j].reply + '</div>' + 
 										'<a class="replylink">Reply</a>' +
-										'<p class="replyview" style="display:none;">' +
-											'<textarea rows="5" cols="80"></textarea><br>' +
+										'<p class="replyview" style="display:none;" resize=none>' +
+											'<textarea rows="5" cols="80" style="resize: none;"></textarea><br>' +
 											'<a class="submitlink">Submit</a>' +
 										'</p>' +
 									'<div class="replies">';
@@ -195,8 +195,8 @@
 		<div class="newtopic">
 			<button type="button" class="newtopicbutton">New Topic</button>
 			<p class="topicview">
-				<textarea class="topictext" rows="5" cols="80"></textarea><br>
-				<textarea class="topiclink" rows="1" cols="80"></textarea><br>
+				<textarea class="topictext" rows="5" cols="80" style="resize: none;"></textarea><br>
+				<textarea class="topiclink" rows="1" cols="80" style="resize: none;"></textarea><br>
 				<a class="submittopic">Submit Topic</a>
 			</p>
 		</div>
@@ -219,7 +219,7 @@
 									'</div>' +
 									'&nbsp;&nbsp;<a class="replylink">Reply</a>' +
 									'<p class="replyview" style="display:none;">' +
-										'<textarea rows="5" cols="80"></textarea><br>' +
+										'<textarea rows="5" cols="80" style="resize: none;"></textarea><br>' +
 										'<a class="submitlink">Submit</a>' +
 									'</p>' +
 								'<div class="replies">' +
@@ -242,7 +242,7 @@
 
 			var topic_html_end = '">Link</a>' +
 								'<p class="replyview">' +
-									'<textarea cols="80" rows="5"></textarea>' +
+									'<textarea cols="80" rows="5" style="resize: none;"></textarea>' +
 									'<br>' +
 									'<a class="submitlink">Submit</a>' +
 								'</p>' +
