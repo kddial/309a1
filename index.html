@@ -50,7 +50,7 @@
 					$('.topicarea').append(output);
 				}
 			});
-			// TODO: add sorting algo here on ever load
+
 			return true;
 		}
 		
@@ -299,7 +299,6 @@
 				$(this).siblings(".topicview").toggle();
 				$(".topicarea").append(topic_html_begin + output + topic_html_middle + tlink + topic_html_end);
 				$(this).parent().toggle();
-				//sendstuff(output, tlink);
 				sendjson();
 			});
 
