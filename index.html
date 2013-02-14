@@ -257,6 +257,10 @@
 					alert("Your reply message exceeds the 140 character limit.");
 					return false;
 				}
+				if (output.length == 0) {
+					alert("Your reply message should not be empty.");
+					return false;
+				}
 
 				$(this).parent().find("textarea").val("");  // Clear the text inside the textarea
 				$(this).parent().parent().children(".replies").append(reply_html_begin + output + reply_html_end);
@@ -290,7 +294,11 @@
 				var output = $(this).siblings(".topictext").val();
 				// Error checking to make sure text does not exceed 140 characters
 				if (output.length > 140) {
-					alert("Your reply message exceeds the 140 character limit.");
+					alert("Your topic title exceeds the 140 character limit.");
+					return false;
+				}
+				if (output.length == 0) {
+					alert("Your topic title should not be empty.");
 					return false;
 				}
 				var tlink = $(this).siblings(".topiclink").val();
