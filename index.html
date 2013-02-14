@@ -71,7 +71,7 @@
 			//first topic info
 			jstring += '{ "topic" : "' + firsttopic.children(".topic_header").children(".topictitle").text() + '", '
 					+ '"vote" : "' + firsttopic.children(".topic_header").children(".topic_votes").text()
-					+ '", "link" : "' + firsttopic.children(".link").attr("href") + '", "replies" : [';
+					+ '", "link" : "' + firsttopic.children(".urllink").attr("href") + '", "replies" : [';
 						
 			// do children
 			if (firsttopic.children(".replies").children(".reply").length > 0) {
@@ -90,7 +90,7 @@
 		function jsontopichelper(jstring, curtopic){
 			jstring += ', { "topic" : "' + curtopic.children(".topic_header").children(".topictitle").text() + '", '
 					+ '"vote" : "' + curtopic.children(".topic_header").children(".topic_votes").text() 
-					+ '", "link" : "' + curtopic.children(".link").attr("href") + '", "replies": [';
+					+ '", "link" : "' + curtopic.children(".urllink").attr("href") + '", "replies": [';
 					
 			// do children
 			if (curtopic.children(".replies").children(".reply").length > 0) {
