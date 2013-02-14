@@ -33,7 +33,7 @@
 										'<div class="topic_header">' +
 											'<div class="vote">^</div>' +
 											'<div class="topic_votes">' + data.topics[i].vote + '</div>' +
-											'<div class="topictitle"> &nbsp;' + data.topics[i].topic + 
+											'<div class="topictitle">' + data.topics[i].topic + 
 											'</div>' +
 										'</div>' +
 										'&nbsp;&nbsp; <a class="view_comments"> View comments</a> &nbsp;&nbsp;' +
@@ -217,7 +217,7 @@
 
 			var reply_html_end =	
 									'</div>' +
-									'&nbsp;&nbsp;<a class="replylink">Reply</a>' +
+									'<a class="replylink">Reply</a>' +
 									'<p class="replyview" style="display:none;">' +
 										'<textarea rows="5" cols="80" style="resize: none;"></textarea><br>' +
 										'<a class="submitlink">Submit</a>' +
@@ -252,6 +252,12 @@
 			// Clicking on the submit reply link
 			$(document).on("click", ".submitlink", function() {
 				var output = $(this).parent().find("textarea").val(); // The text inside the textarea
+				// Error checking to make sure text does not exceed 140 characters
+				if (output.length > 140) {
+					alert("Your reply message exceeds the 140 character limit.");
+					return false;
+				}
+
 				$(this).parent().find("textarea").val("");  // Clear the text inside the textarea
 				$(this).parent().parent().children(".replies").append(reply_html_begin + output + reply_html_end);
 				$(this).parent().toggle();  // Toggle the replyview to disapeer after hitting submit
@@ -279,6 +285,11 @@
 			// Submitting a new topic by clicking on submit link
 			$(document).on("click", ".submittopic", function() {
 				var output = $(this).siblings(".topictext").val();
+				// Error checking to make sure text does not exceed 140 characters
+				if (output.length > 140) {
+					alert("Your reply message exceeds the 140 character limit.");
+					return false;
+				}
 				var tlink = $(this).siblings(".topiclink").val();
 				$(this).siblings(".topictext").val("");
 				$(this).siblings(".topiclink").val("");
